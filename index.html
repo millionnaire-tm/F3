@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&display=swap" rel="stylesheet">
+
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Le Cerf - La Valise</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+
+    background: #000;
+
+    font-family: "Arial", sans-serif;
+
+    color: white;
+
+}
+
+#experience {
+
+    position: relative;
+
+    width: 100vw;
+    height: 100vh;
+
+    background: #000;
+
+    overflow: hidden;
+
+}
+
+/* =========================
+   FOND
+========================= */
+
+#background-layer {
+
+    position: absolute;
+
+    inset: 0;
+
+    opacity: 0;
+
+    animation: backgroundReveal 3s ease forwards;
+
+}
+
+#background {
+
+width:100%;
+height:100%;
+
+object-fit:cover;
+
+filter:
+brightness(.55)
+contrast(1.08);
+
+transform:none;
+
+animation:none;
+
+}
+
+@keyframes backgroundReveal {
+
+    from {
+        opacity:0;
+    }
+
+    to {
+        opacity:1;
+    }
+
+}
+
+@keyframes slowZoom {
+
+    from {
+        transform:scale(1.08);
+    }
+
+    to {
+        transform:scale(1.15);
+    }
+
+}
+
+/* =========================
+   PARTICULES DORÉES
+========================= */
+
+#particles {
+
+    position:absolute;
+
+    inset:0;
+
+    z-index:3;
+
+    pointer-events:none;
+
+}
+
+.particle {
+
+    position:absolute;
+
+    width:3px;
+    height:3px;
+
+    background:#e8c778;
+
+    border-radius:50%;
+
+    box-shadow:
+    0 0 15px #e8c778;
+
+    animation:
+    floatParticle linear infinite;
+
+}
+
+@keyframes floatParticle {
+
+    from {
+
+        transform:
+        translateY(110vh);
+
+        opacity:0;
+
+    }
+
+    20% {
+
+        opacity:1;
+
+    }
+
+    to {
+
+        transform:
+        translateY(-20vh);
+
+        opacity:0;
+
+    }
+
+}
+
+/* =========================
+   LUMIERE
+========================= */
+
+#light {
+
+    position:absolute;
+
+    inset:-20%;
+
+    z-index:4;
+
+    pointer-events:none;
+
+    background:
+
+    radial-gradient(
+    circle at center,
+    rgba(255,215,120,.25),
+    transparent 45%
+    );
+
+    opacity:0;
+
+    animation:
+
+    lightAppear 4s ease forwards;
+
+}
+
+@keyframes lightAppear {
+
+    to {
+
+        opacity:1;
+
+    }
+
+}
+
+/* =========================
+   CAMERA
+========================= */
+
+#camera {
+
+    position:absolute;
+
+    inset:0;
+
+    z-index:10;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    transform:scale(.85);
+
+    animation:
+
+    cameraEnter 3s cubic-bezier(.2,.8,.2,1) forwards;
+
+}
+
+@keyframes cameraEnter {
+
+    from {
+
+        transform:
+        scale(.7)
+        translateY(40px);
+
+    }
+
+    to {
+
+        transform:
+        scale(1)
+        translateY(0);
+
+    }
+
+}
+
+/* =========================
+   VALISE
+========================= */
+
+.suitcase {
+
+    position:absolute;
+
+    width:min(55vw,600px);
+
+    max-width:600px;
+
+    filter:
+
+    drop-shadow(
+    0 50px 80px rgba(0,0,0,.8)
+    );
+
+    opacity:0;
+
+    transition:
+
+    opacity 1.2s ease,
+    transform 1.2s ease;
+
+}
+
+.suitcase.active {
+
+    opacity:1;
+
+}
+
+#suitcaseClosed {
+
+    animation:
+
+    suitcaseBreath 5s infinite ease-in-out;
+
+}
+
+@keyframes suitcaseBreath {
+
+    0% {
+
+        transform:
+        scale(1);
+
+    }
+
+    50% {
+
+        transform:
+        scale(1.025);
+
+    }
+
+    100% {
+
+        transform:
+        scale(1);
+
+    }
+
+}
+
+#suitcaseOpen {
+
+    transform:
+
+    scale(.95);
+
+}
+
+/* =========================
+   LETTRE
+========================= */
+
+#letter {
+
+    position:absolute;
+
+    width:min(18vw,180px);
+
+    opacity:0;
+
+    transform:
+
+    translateY(80px)
+    scale(.8)
+    rotate(-5deg);
+
+    transition:
+
+    all 1.5s cubic-bezier(.2,.8,.2,1);
+
+    cursor:pointer;
+
+}
+
+#letter.show {
+
+    opacity:1;
+
+    transform:
+
+    translateY(0)
+    scale(1)
+    rotate(0deg);
+
+}
+
+/* =========================
+   BOUTONS
+========================= */
+
+button{
+
+    border:none;
+    cursor:pointer;
+
+    color:white;
+    background:rgba(0,0,0,.6);
+
+    border:1px solid rgba(232,199,120,.5);
+
+    padding:12px 26px;
+
+    border-radius:50px;
+
+    backdrop-filter:blur(10px);
+
+    transition:.3s;
+
+    /* AJOUTE UNIQUEMENT CES LIGNES */
+
+    font-family:"Cinzel", serif;
+    font-size:14px;
+    font-weight:600;
+    letter-spacing:3px;
+    text-transform:uppercase;
+
+}
+
+
+button:hover {
+
+    transform:scale(1.05);
+
+    background:
+
+    rgba(232,199,120,.2);
+
+}
+
+#interface {
+
+    position:absolute;
+
+    bottom:80px;
+
+    left:0;
+
+    right:0;
+
+    z-index:20;
+
+    text-align:center;
+
+}
+
+#introText {
+
+    margin-bottom:40px;
+
+    animation:
+
+    fadeUp 2s ease forwards;
+
+}
+
+.small {
+
+    letter-spacing:5px;
+
+    font-size:12px;
+
+    color:#e8c778;
+
+}
+
+h1 {
+
+    font-size:60px;
+
+    font-weight:300;
+
+}
+
+#openButton {
+
+    display:inline-block;
+
+}
+
+/* =========================
+   REVEAL
+========================= */
+
+#reveal {
+
+    position:absolute;
+
+    inset:0;
+
+    z-index:100;
+
+    display:none;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:
+
+    rgba(0,0,0,.85);
+
+}
+
+#revealBox {
+
+    width:min(600px,90%);
+
+    text-align:center;
+
+    padding:50px;
+
+    border-radius:20px;
+
+    background:
+
+    rgba(15,15,15,.9);
+
+    border:
+
+    1px solid rgba(232,199,120,.4);
+
+    animation:
+
+    fadeUp 1s ease;
+
+}
+
+#letterIcon {
+
+    font-size:50px;
+
+    margin-bottom:20px;
+
+}
+
+@keyframes fadeUp {
+
+    from {
+
+        opacity:0;
+
+        transform:
+        translateY(40px);
+
+    }
+
+    to {
+
+        opacity:1;
+
+        transform:
+        translateY(0);
+
+    }
+
+}
+
+.subtitle {
+
+font-family: "Times New Roman", serif;
+
+font-size:20px;
+
+letter-spacing:12px;
+
+color:rgba(255,220,150,.8);
+
+text-transform:uppercase;
+
+opacity:.8;
+
+}
+
+#suitcaseOpen.active {
+
+opacity:1;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="experience">
+
+    <!-- Fond -->
+    <div id="background-layer">
+        <img id="background"
+        src="https://i.goopics.net/jrh7fx.jpg">
+    </div>
+
+    <!-- Particules -->
+    <div id="particles"></div>
+
+    <!-- Lumière -->
+    <div id="light"></div>
+
+    <!-- Conteneur caméra -->
+    <div id="camera">
+
+        <!-- Valise fermée -->
+        <img 
+        id="suitcaseClosed"
+        class="suitcase active"
+        src="https://i.goopics.net/n7aaau.png">
+
+        <!-- Valise ouverte -->
+        <img 
+        id="suitcaseOpen"
+        class="suitcase"
+        src="https://i.goopics.net/3euhky.png">
+
+        <!-- Lettre -->
+        <img
+        id="letter"
+        src="https://i.goopics.net/6lbav8.png">
+
+    </div>
+
+    <!-- Interface -->
+    <div id="interface">
+
+<div id="introText">
+
+<p class="subtitle">
+DÉCOUVREZ SON CONTENU.
+</p>
+
+</div>
+
+        <button id="openButton">
+            🔓 Ouvrir la valise
+        </button>
+
+    </div>
+
+    <!-- Révélation finale -->
+    <div id="reveal">
+
+        <div id="revealBox">
+
+            <div id="letterIcon">
+                ✉
+            </div>
+
+            <h2 id="revealTitle">
+            </h2>
+
+            <p id="revealText">
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+// ===============================
+// ELEMENTS
+// ===============================
+
+const suitcaseClosed = document.getElementById("suitcaseClosed");
+const suitcaseOpen = document.getElementById("suitcaseOpen");
+
+const openButton = document.getElementById("openButton");
+
+const letter = document.getElementById("letter");
+
+const reveal = document.getElementById("reveal");
+const revealTitle = document.getElementById("revealTitle");
+const revealText = document.getElementById("revealText");
+
+// ===============================
+// PARTICULES
+// ===============================
+
+const particles = document.getElementById("particles");
+
+for(let i = 0; i < 80; i++){
+
+    const p = document.createElement("div");
+
+    p.className = "particle";
+
+    p.style.left = Math.random()*100 + "%";
+
+    p.style.animationDuration =
+        (8 + Math.random()*12) + "s";
+
+    p.style.animationDelay =
+        Math.random()*10 + "s";
+
+    const size =
+        1 + Math.random()*4;
+
+    p.style.width = size+"px";
+    p.style.height = size+"px";
+
+    particles.appendChild(p);
+
+}
+
+// ===============================
+// ETAT DU JEU
+// ===============================
+
+let opened = false;
+
+// ===============================
+// OUVERTURE VALISE
+// ===============================
+document.getElementById("introText").style.opacity = "1";
+
+openButton.addEventListener("click",()=>{
+
+    if(opened) return;
+
+    opened = true;
+
+    document.getElementById("introText").style.opacity = "0";
+
+    document.getElementById("camera").style.transform = "scale(1.12)";
+
+    openButton.style.display = "none";
+
+    suitcaseClosed.style.opacity = 0;
+
+    
+    setTimeout(()=>{
+
+        suitcaseOpen.classList.add("active");
+
+    },500);
+
+    // lettre arrive
+
+    setTimeout(()=>{
+
+        letter.classList.add("show");
+
+    },1800);
+
+});
+
+// ===============================
+// CLIC LETTRE
+// ===============================
+
+letter.addEventListener("click",()=>{
+
+    reveal.style.display="flex";
+
+    revealTitle.innerHTML = 
+"Vous n'êtes pas le millionnaire, mais vous obtenez un indice sur l'identité de celui-ci. À vous de décider ce que vous souhaitez en faire : le partager, ou garder pour vous pour enquêter en secret. L'indice est le suivant : Le Millionnaire travaille ou à travaillé dans le secteur public. ";
+    
+
+});
+
+// ===============================
+// EFFET DE RESPIRATION CAMERA
+// ===============================
+
+let camera =
+document.getElementById("camera");
+
+setInterval(()=>{
+
+    if(opened) return;
+
+    camera.animate(
+    [
+
+        {
+            transform:"scale(1)"
+        },
+
+        {
+            transform:"scale(1.015)"
+        },
+
+        {
+            transform:"scale(1)"
+        }
+
+    ],
+
+    {
+
+        duration:5000,
+        easing:"ease-in-out"
+
+    });
+
+},5500);
+
+</script>
+
+</body>
+
+</html>
